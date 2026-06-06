@@ -13,21 +13,30 @@
   });
 </script>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5CTBKRVD08"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-5CTBKRVD08');
+</script>
 <body>
 <script type="application/javascript"
         src="questions.js">
 </script>
 <h1>8values</h1>
 <hr>
-<h2 style="text-align:center;" id="question-number">Loading...</h2>
+<h2 style="text-align:center;" id="question-number">加载中……</h2>
 <p class="question" id="question-text"></p>
-<button class="button stronglyAgree" onclick="next_question( 1.0)">Strongly Agree</button> <br>
-<button class="button agree" onclick="next_question( 0.5)">Agree</button> <br>
-<button class="button neutral" onclick="next_question( 0.0)">Neutral/Unsure</button> <br>
-<button class="button disagree" onclick="next_question(-0.5)">Disagree</button> <br>
-<button class="button stronglyDisagree" onclick="next_question(-1.0)">Strongly Disagree</button> <br>
-<button class="small_button" onclick="prev_question()" id="back_button">Back</button>
-<button class="small_button_off" id="back_button_off">Back</button><br>
+<button class="button stronglyAgree" onclick="next_question( 1.0)">非常同意</button> <br>
+<button class="button agree" onclick="next_question( 0.5)">同意</button> <br>
+<button class="button neutral" onclick="next_question( 0.0)">中立/不确定</button> <br>
+<button class="button disagree" onclick="next_question(-0.5)">不同意</button> <br>
+<button class="button stronglyDisagree" onclick="next_question(-1.0)">非常不同意</button> <br>
+<button class="small_button" onclick="prev_question()" id="back_button">返回</button>
+<button class="small_button_off" id="back_button_off">返回</button><br>
 
 <!-- Website visit statistics - no personal information is collected! -->
 <script type="text/javascript">
@@ -64,7 +73,7 @@ stats"></a></div></noscript>
     }
     function init_question() {
         document.getElementById("question-text").innerHTML = questions[qn].question;
-        document.getElementById("question-number").innerHTML = "Question " + (qn + 1) + " of " + (questions.length);
+        document.getElementById("question-number").innerHTML = "第 " + (qn + 1) + " 个问题，共 " + (questions.length)+" 个";
         if (qn == 0) {
             document.getElementById("back_button").style.display = 'none';
             document.getElementById("back_button_off").style.display = 'block';
