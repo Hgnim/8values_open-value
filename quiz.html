@@ -21,6 +21,59 @@
 <button class="small_button" onclick="prev_question()" id="back_button">返回</button>
 <button class="small_button_off" id="back_button_off">返回</button><br>
 
+<textarea id="outputPanel" style="position: fixed; left: 5vw; top: 3vh; width: 20vw; height: 20vh; display:none;" readonly>
+输出面板：
+
+在问题中，选项对基础分的计算公式：
+非常同意：基础分 x 1.0
+同意：基础分 x 0.5
+中立/不确定：基础分 x 0
+不同意：基础分 x -0.5
+非常不同意：基础分 x 1.0
+</textarea>
+
+<script>
+    const outputPanel=document.getElementById('outputPanel');
+    let outputPanel_isShow=false;
+    window.addEventListener('keydown', function (event) {
+            if (event.key === 'o' || event.key === 'O') {
+                event.preventDefault();
+                outputPanel.style.display=(outputPanel_isShow)?'none':'unset';
+                outputPanel_isShow=!outputPanel_isShow;
+            }
+        });
+    
+    function outputPanel_init(){
+        outputPanel.value+=
+`
+经济平等最高分数：${max_econ}
+全球外交最高分数：${max_dipl}
+民事自由最高分数：${max_govt}
+社会进步最高分数：${max_scty}
+`;
+    }
+
+    function outputPanel_output(){
+        outputPanel.value+=
+`
+----------
+
+问题${qn+1}/${questions.length}：
+经济平等基础分数：${questions[qn].effect.econ}
+全球外交基础分数：${questions[qn].effect.dipl}
+民事自由基础分数：${questions[qn].effect.govt}
+社会进步基础分数：${questions[qn].effect.scty}
+
+当前得分：
+经济平等分数：${econ_array.reduce((a, b) => a + b, 0)}
+全球外交分数：${dipl_array.reduce((a, b) => a + b, 0)}
+民事自由分数：${govt_array.reduce((a, b) => a + b, 0)}
+社会进步分数：${scty_array.reduce((a, b) => a + b, 0)}
+`;
+        outputPanel.scrollTop = outputPanel.scrollHeight;//滚动到底部
+    }
+</script>
+
 <!-- JavaScript for the test itself -->
 <script>
     var max_econ, max_dipl, max_govt, max_scty; // Max possible scores
@@ -30,13 +83,14 @@
     let govt_array = new Array(questions.length);
     let scty_array = new Array(questions.length);
     var qn = 0; // Question number
-    init_question();
     for (var i = 0; i < questions.length; i++) {
         max_econ += Math.abs(questions[i].effect.econ)
         max_dipl += Math.abs(questions[i].effect.dipl)
         max_govt += Math.abs(questions[i].effect.govt)
         max_scty += Math.abs(questions[i].effect.scty)
     }
+    outputPanel_init();
+    init_question();
     function init_question() {
         document.getElementById("question-text").innerHTML = questions[qn].question;
         document.getElementById("question-number").innerHTML = "第 " + (qn + 1) + " 个问题，共 " + (questions.length)+" 个";
@@ -47,7 +101,7 @@
             document.getElementById("back_button").style.display = 'block';
             document.getElementById("back_button_off").style.display = 'none';
         }
-
+        outputPanel_output();
     }
 
     function next_question(mult) {
